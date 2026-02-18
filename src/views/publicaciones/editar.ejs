@@ -1,0 +1,23 @@
+<h1>Editar publicación</h1>
+
+<form action="/publicaciones/<%= publicacion.id_publicacion %>/editar" method="POST">
+    <label>Título:</label>
+    <input type="text" name="titulo" value="<%= publicacion.titulo %>" required>
+
+    <label>Contenido:</label>
+    <textarea name="contenido" required><%= publicacion.contenido %></textarea>
+
+    <label>Categoría:</label>
+    <select name="categoria">
+        <option value="">Sin categoría</option>
+        <% categorias.forEach(cat=> { %>
+            <option value="<%= cat.id_categoria %>" <%=publicacion.id_categoria===cat.id_categoria ? "selected" : "" %>>
+                <%= cat.nombre %>
+            </option>
+            <% }) %>
+    </select>
+
+    <button type="submit">Guardar cambios</button>
+</form>
+
+<a href="/publicaciones/<%= publicacion.id_publicacion %>">Cancelar</a>

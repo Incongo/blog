@@ -1,0 +1,33 @@
+<div style="margin-bottom: 20px;">
+    <p>
+        <strong>
+            <%= c.usuario.nombre %>:
+        </strong>
+        <%= c.texto %>
+    </p>
+
+    <% if (user && user.id===c.id_usuario) { %>
+        <a href="/comentarios/<%= c.id_comentario %>/editar">Editar</a>
+
+        <form action="/comentarios/<%= c.id_comentario %>/eliminar" method="POST" style="display:inline;">
+            <button type="submit">Eliminar</button>
+        </form>
+        <% } %>
+
+            <% if (user) { %>
+                <form action="/comentarios/crear" method="POST" style="margin-top:10px;">
+                    <input type="hidden" name="id_publicacion" value="<%= c.id_publicacion %>">
+                    <input type="hidden" name="id_padre" value="<%= c.id_comentario %>">
+                    <textarea name="texto" placeholder="Responder..." required></textarea>
+                    <button type="submit">Responder</button>
+                </form>
+                <% } %>
+
+                    <% if (c.other_comentario && c.other_comentario.length> 0) { %>
+                        <div style="margin-left: 30px; margin-top: 10px;">
+                            <% c.other_comentario.forEach(r=> { %>
+                                <%- include("item", { c: r }) %>
+                                    <% }) %>
+                        </div>
+                        <% } %>
+</div>

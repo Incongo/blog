@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Blog</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body class="bg-light">
+
+    <!-- NAVBAR CON BUSCADOR -->
+    <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm mb-4">
+        <div class="container-fluid">
+
+            <a class="navbar-brand fw-bold" href="/">Mr. Blog</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarScroll">
+
+                <!-- LINKS IZQUIERDA -->
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Inicio</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/publicaciones">Publicaciones</a>
+                    </li>
+
+                    <% if (user) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/perfil">Mi perfil</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link" href="/publicaciones/crear">Crear publicación</a>
+                        </li>
+                        <% } %>
+
+                </ul>
+
+                <!-- BUSCADOR -->
+                <form class="d-flex" role="search" action="/buscar" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Buscar..."
+                        aria-label="Search" />
+                    <button class="btn btn-outline-success" type="submit">Buscar</button>
+                </form>
+
+                <!-- LOGIN / LOGOUT -->
+                <ul class="navbar-nav ms-3">
+                    <% if (user) { %>
+                        <li class="nav-item">
+                            <a class="nav-link text-danger" href="/logout">Cerrar sesión</a>
+                        </li>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/login">Iniciar sesión</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/register">Registrarse</a>
+                            </li>
+                            <% } %>
+                </ul>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO -->
+    <main class="container">
+        <%- body %>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+</body>
+
+</html>

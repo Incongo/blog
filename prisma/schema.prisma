@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model categoria {
+  id_categoria Int           @id @default(autoincrement())
+  nombre       String        @unique @db.VarChar(100)
+  descripcion  String?
+  publicacion  publicacion[]
+}
+
+model comentario {
+  id_comentario       Int          @id @default(autoincrement())
+  id_publicacion      Int
+  id_usuario          Int
+  texto               String
+  fecha_comentario    DateTime?    @default(now()) @db.Timestamp(6)
+  fecha_edicion       DateTime?    @db.Timestamp(6)
+  moderado            Boolean?     @default(false)
+  puntuacion          Int?         @default(0)
+  id_comentario_padre Int?
+  comentario          comentario?  @relation("comentarioTocomentario", fields: [id_comentario_padre], references: [id_comentario], onDelete: Cascade, onUpdate: NoAction)
+  other_comentario    comentario[] @relation("comentarioTocomentario")
+  publicacion         publicacion  @relation(fields: [id_publicacion], references: [id_publicacion], onDelete: Cascade, onUpdate: NoAction)
+  usuario             usuario      @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model etiqueta {
+  id_etiqueta          Int                    @id @default(autoincrement())
+  nombre               String                 @unique @db.VarChar(50)
+  publicacion_etiqueta publicacion_etiqueta[]
+}
+
+model megusta_publicacion {
+  id_usuario     Int
+  id_publicacion Int
+  fecha_megusta  DateTime?   @default(now()) @db.Timestamp(6)
+  publicacion    publicacion @relation(fields: [id_publicacion], references: [id_publicacion], onDelete: Cascade, onUpdate: NoAction)
+  usuario        usuario     @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_usuario, id_publicacion])
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model publicacion {
+  id_publicacion       Int                    @id @default(autoincrement())
+  id_usuario           Int
+  titulo               String                 @db.VarChar(200)
+  contenido            String
+  fecha_publicacion    DateTime?              @default(now()) @db.Timestamp(6)
+  fecha_actualizacion  DateTime?              @db.Timestamp(6)
+  estado               String?                @db.VarChar(20)
+  id_categoria         Int?
+  comentario           comentario[]
+  megusta_publicacion  megusta_publicacion[]
+  categoria            categoria?             @relation(fields: [id_categoria], references: [id_categoria], onUpdate: NoAction)
+  usuario              usuario                @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+  publicacion_etiqueta publicacion_etiqueta[]
+}
+
+model publicacion_etiqueta {
+  id_publicacion Int
+  id_etiqueta    Int
+  etiqueta       etiqueta    @relation(fields: [id_etiqueta], references: [id_etiqueta], onDelete: Cascade, onUpdate: NoAction)
+  publicacion    publicacion @relation(fields: [id_publicacion], references: [id_publicacion], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_publicacion, id_etiqueta])
+}
+
+model seguimiento {
+  id_seguidor                              Int
+  id_seguido                               Int
+  fecha_seguimiento                        DateTime? @default(now()) @db.Timestamp(6)
+  usuario_seguimiento_id_seguidoTousuario  usuario   @relation("seguimiento_id_seguidoTousuario", fields: [id_seguido], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+  usuario_seguimiento_id_seguidorTousuario usuario   @relation("seguimiento_id_seguidorTousuario", fields: [id_seguidor], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id_seguidor, id_seguido])
+}
+
+model usuario {
+  id_usuario                                   Int                   @id @default(autoincrement())
+  nombre                                       String                @db.VarChar(100)
+  email                                        String                @unique @db.VarChar(150)
+  contrase_a                                   String                @map("contraseña") @db.VarChar(200)
+  fecha_registro                               DateTime?             @default(now()) @db.Timestamp(6)
+  activo                                       Boolean?              @default(true)
+  biografia                                    String?
+  foto_perfil                                  String?
+  comentario                                   comentario[]
+  megusta_publicacion                          megusta_publicacion[]
+  publicacion                                  publicacion[]
+  seguimiento_seguimiento_id_seguidoTousuario  seguimiento[]         @relation("seguimiento_id_seguidoTousuario")
+  seguimiento_seguimiento_id_seguidorTousuario seguimiento[]         @relation("seguimiento_id_seguidorTousuario")
+  usuario_telefono                             usuario_telefono[]
+}
+
+model usuario_telefono {
+  id_telefono Int     @id @default(autoincrement())
+  id_usuario  Int
+  telefono    String  @db.VarChar(30)
+  usuario     usuario @relation(fields: [id_usuario], references: [id_usuario], onDelete: Cascade, onUpdate: NoAction)
+}

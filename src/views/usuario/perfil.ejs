@@ -1,0 +1,91 @@
+<h1>Perfil de <%= usuario.nombre %>
+</h1>
+
+<% if (usuario.foto_perfil) { %>
+    <img src="<%= usuario.foto_perfil %>" alt="Foto de perfil"
+        style="width:150px; height:150px; object-fit:cover; border-radius:50%;">
+    <% } else { %>
+        <p>Sin foto de perfil</p>
+        <% } %>
+
+            <% if (!esPropietario) { %>
+
+                <form action="/usuario/foto" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="foto" accept="image/*" required>
+                    <button type="submit">Actualizar foto</button>
+                </form>
+
+
+                <form action="/usuario/<%= usuario.id_usuario %>/seguir" method="POST">
+                    <button type="submit">
+                        <% if (usuario.seguimiento_seguimiento_id_seguidoTousuario.some(s=> s.id_seguidor ===
+                            user.id))
+                            { %>
+                            Dejar de seguir
+                            <% } else { %>
+                                Seguir
+                                <% } %>
+                    </button>
+                </form>
+                <% } %>
+
+
+                    <p><strong>Biografía:</strong>
+                        <%= usuario.biografia || "Sin biografía" %>
+                    </p>
+                    <p><strong>Miembro desde:</strong>
+                        <%= usuario.fecha_registro.toLocaleDateString() %>
+                    </p>
+
+                    <p><strong>Likes recibidos:</strong>
+                        <%= likesRecibidos %>
+                    </p>
+
+
+                    <h3>Teléfonos</h3>
+                    <ul>
+                        <% usuario.usuario_telefono.forEach(t=> { %>
+                            <li>
+                                <%= t.telefono %>
+                            </li>
+                            <% }) %>
+                    </ul>
+
+                    <hr>
+
+                    <h2>Publicaciones</h2>
+                    <ul>
+                        <% usuario.publicacion.forEach(p=> { %>
+                            <li>
+                                <a href="/publicaciones/<%= p.id_publicacion %>">
+                                    <%= p.titulo %>
+                                </a>
+                                — <%= p.megusta_publicacion.length %> likes
+                            </li>
+                            <% }) %>
+                    </ul>
+
+                    <hr>
+
+                    <h2>Comentarios</h2>
+                    <ul>
+                        <% usuario.comentario.forEach(c=> { %>
+                            <li>
+                                En <a href="/publicaciones/<%= c.publicacion.id_publicacion %>">
+                                    <%= c.publicacion.titulo %>
+                                </a>:
+                                <%= c.texto %>
+                            </li>
+                            <% }) %>
+                    </ul>
+
+                    <hr>
+
+                    <h2>Seguidores: <%= usuario.seguimiento_seguimiento_id_seguidoTousuario.length %>
+                    </h2>
+                    <h2>Siguiendo: <%= usuario.seguimiento_seguimiento_id_seguidorTousuario.length %>
+                    </h2>
+
+                    <% if (esPropietario) { %>
+                        <a href="/usuario/editar">Editar perfil</a>
+                        <% } %>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+</head>
+
+<body>
+    <h1>Panel de usuario</h1>
+
+    <p>Bienvenido, <%= user.nombre %>!</p>
+
+    <nav>
+        <a href="/">Inicio</a>
+        <a href="/logout">Cerrar sesión</a>
+    </nav>
+
+    <hr>
+
+    <h2>Opciones disponibles</h2>
+    <ul>
+        <li><a href="/publicaciones">Ver publicaciones</a></li>
+        <li><a href="/publicaciones/crear">Crear nueva publicación</a></li>
+        <li><a href="/perfil">Mi perfil</a></li>
+        <li><a href="/seguidores">Seguidores</a></li>
+        <li><a href="/comentarios">Mis comentarios</a></li>
+    </ul>
+</body>
+
+</html>

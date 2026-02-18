@@ -1,0 +1,14 @@
+<h1>Publicaciones</h1>
+
+<a href="/publicaciones/crear">Crear nueva publicación</a>
+
+<ul>
+    <% publicaciones.forEach(pub=> { %>
+        <li>
+            <a href="/publicaciones/<%= pub.id_publicacion %>">
+                <%= pub.titulo %>
+            </a>
+            — por <%= pub.usuario.nombre %>
+        </li>
+        <% }) %>
+</ul>

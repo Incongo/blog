@@ -10,43 +10,45 @@
     Autor: <%= publicacion.usuario.nombre %><br>
         Categoría: <%= publicacion.categoria ? publicacion.categoria.nombre : "Sin categoría" %>
 </p>
+<!-- Solo si es el autor de la publicacion puede editar y eliminar-->
+<% if (user && user.id===publicacion.id_usuario) { %>
+    <a href="/publicaciones/<%= publicacion.id_publicacion %>/editar">Editar</a>
 
-<a href="/publicaciones/<%= publicacion.id_publicacion %>/editar">Editar</a>
+    <form action="/publicaciones/<%= publicacion.id_publicacion %>/eliminar" method="POST">
+        <button type="submit">Eliminar</button>
+    </form>
+    <% } %>
 
-<form action="/publicaciones/<%= publicacion.id_publicacion %>/eliminar" method="POST">
-    <button type="submit">Eliminar</button>
-</form>
+        <% const totalLikes=publicacion.megusta_publicacion.length; %>
 
-<% const totalLikes=publicacion.megusta_publicacion.length; %>
-
-    <% if (user) { %>
-        <form action="/publicaciones/<%= publicacion.id_publicacion %>/like" method="POST">
-            <button type="submit">
-                👍 Me gusta (<%= totalLikes %>)
-            </button>
-        </form>
-        <% } else { %>
-            <p>👍 <%= totalLikes %> personas les gusta esto</p>
-            <% } %>
+            <% if (user) { %>
+                <form action="/publicaciones/<%= publicacion.id_publicacion %>/like" method="POST">
+                    <button type="submit">
+                        👍 Me gusta (<%= totalLikes %>)
+                    </button>
+                </form>
+                <% } else { %>
+                    <p>👍 <%= totalLikes %> personas les gusta esto</p>
+                    <% } %>
 
 
-                <a href="/publicaciones">Volver</a>
+                        <a href="/publicaciones">Volver</a>
 
-                <h2>Comentarios</h2>
+                        <h2>Comentarios</h2>
 
-                <% if (user) { %>
-                    <form action="/comentarios/crear" method="POST">
-                        <input type="hidden" name="id_publicacion" value="<%= publicacion.id_publicacion %>">
-                        <textarea name="texto" required></textarea>
-                        <button type="submit">Comentar</button>
-                    </form>
-                    <% } else { %>
-                        <p><a href="/login">Inicia sesión</a> para comentar</p>
-                        <% } %>
+                        <% if (user) { %>
+                            <form action="/comentarios/crear" method="POST">
+                                <input type="hidden" name="id_publicacion" value="<%= publicacion.id_publicacion %>">
+                                <textarea name="texto" required></textarea>
+                                <button type="submit">Comentar</button>
+                            </form>
+                            <% } else { %>
+                                <p><a href="/login">Inicia sesión</a> para comentar</p>
+                                <% } %>
 
-                            <hr>
+                                    <hr>
 
-                            <% publicacion.comentario.forEach(c=> { %>
-                                <%- include("../comentarios/item", { c }) %>
+                                    <% publicacion.comentario.forEach(c=> { %>
+                                        <%- include("../comentarios/item", { c }) %>
 
-                                    <% }) %>
+                                            <% }) %>

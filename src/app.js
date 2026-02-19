@@ -42,10 +42,10 @@ app.use("/", require("./routes/usuario.routes"));
 app.use("/", require("./routes/dashboard.routes"));
 app.use("/", require("./routes/publicacion.routes"));
 app.use("/", require("./routes/comentario.routes"));
-app.use("/", require("./routes/megusta.routes"));
 app.use("/", require("./routes/perfil.routes"));
 app.use("/", require("./routes/seguimiento.routes"));
 app.use("/", require("./routes/index.routes"));
+app.use("/", require("./routes/buscar.routes"));
 
 // (Opcional) — ya tienes arriba el static, este no hace falta
 // app.use(express.static("public"));

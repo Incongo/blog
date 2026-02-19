@@ -66,10 +66,16 @@ module.exports = {
   // FORMULARIO EDITAR
   async editarForm(req, res) {
     const id = Number(req.params.id);
-
+    //Solo puedo editar si soy el autor de la publicación
     const publicacion = await prisma.publicacion.findUnique({
       where: { id_publicacion: id },
     });
+
+    if (!publicacion) return res.status(404).send("Publicación no encontrada");
+    if (publicacion.id_usuario !== req.session.user.id) {
+      //Redireccionar a ver todas las publicaciones en vez de mostrar un error
+      return res.redirect("/publicaciones");
+    }
 
     const categorias = await prisma.categoria.findMany();
 
@@ -96,6 +102,16 @@ module.exports = {
   // ELIMINAR
   async eliminar(req, res) {
     const id = Number(req.params.id);
+    //Comporbar que soy el autor de la publicación antes de eliminarla
+    const publicacion = await prisma.publicacion.findUnique({
+      where: { id_publicacion: id },
+    });
+    if (!publicacion) {
+      return res.status(404).send("Publicación no encontrada");
+    }
+    if (publicacion.id_usuario !== req.session.user.id) {
+      return res.redirect("/publicaciones");
+    }
 
     await prisma.publicacion.delete({
       where: { id_publicacion: id },
@@ -138,5 +154,56 @@ module.exports = {
       likesRecibidos,
       user: req.session.user,
     });
+  },
+
+  async togglelike(req, res) {
+    // ID de la publicación desde la URL
+    const id_publicacion = Number(req.params.id);
+
+    // ID del usuario desde la sesión
+    const id_usuario = req.session.user.id;
+
+    // ---------------------------------------------------------
+    // 1. Comprobar si el usuario YA ha dado like a esta publicación
+    // ---------------------------------------------------------
+    const existing = await prisma.megusta_publicacion.findUnique({
+      where: {
+        id_usuario_id_publicacion: {
+          id_usuario,
+          id_publicacion,
+        },
+      },
+    });
+
+    // ---------------------------------------------------------
+    // 2. Si existe → quitar like
+    // ---------------------------------------------------------
+    if (existing) {
+      await prisma.megusta_publicacion.delete({
+        where: {
+          id_usuario_id_publicacion: {
+            id_usuario,
+            id_publicacion,
+          },
+        },
+      });
+    }
+    // ---------------------------------------------------------
+    // 3. Si NO existe → dar like
+    // ---------------------------------------------------------
+    else {
+      await prisma.megusta_publicacion.create({
+        data: {
+          id_usuario,
+          id_publicacion,
+        },
+      });
+    }
+
+    // ---------------------------------------------------------
+    // 4. Redirigir SIEMPRE a la publicación original
+    //    (evita el error "Cannot GET /back")
+    // ---------------------------------------------------------
+    res.redirect("/publicaciones/" + id_publicacion);
   },
 };

@@ -25,4 +25,6 @@ router.post(
   publicacionController.eliminar,
 );
 
+router.post("/publicaciones/:id/like", auth, publicacionController.togglelike);
+
 module.exports = router;

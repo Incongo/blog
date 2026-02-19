@@ -1,4 +1,4 @@
-<div class="text-center mb-5">
+<div class="hero-box">
     <h1 class="display-4 fw-bold">Bienvenido a Mi Blog</h1>
     <p class="lead">Comparte tus ideas, descubre contenido y conecta con otros usuarios.</p>
 
@@ -11,42 +11,48 @@
             <% } %>
 </div>
 
-<hr>
-
 <h2 class="mb-4">Secciones principales</h2>
 
 <div class="row g-4">
 
     <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">Publicaciones</h5>
-                <p class="card-text">Explora las publicaciones creadas por la comunidad.</p>
-                <a href="/publicaciones" class="btn btn-dark">Ver publicaciones</a>
-            </div>
+        <div class="section-card">
+            <h5>Publicaciones</h5>
+            <p>Explora las publicaciones creadas por la comunidad.</p>
+            <a href="/publicaciones" class="btn btn-primary">Ver publicaciones</a>
         </div>
     </div>
 
     <% if (user) { %>
         <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Crear publicación</h5>
-                    <p class="card-text">Comparte tus ideas con el mundo.</p>
-                    <a href="/publicaciones/crear" class="btn btn-dark">Crear</a>
-                </div>
+            <div class="section-card">
+                <h5>Crear publicación</h5>
+                <p>Comparte tus ideas con el mundo.</p>
+                <a href="/publicaciones/crear" class="btn btn-primary">Crear</a>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Mi perfil</h5>
-                    <p class="card-text">Edita tu información y revisa tu actividad.</p>
-                    <a href="/perfil" class="btn btn-dark">Ir a mi perfil</a>
-                </div>
+            <div class="section-card">
+                <h5>Mi perfil</h5>
+                <p>Edita tu información y revisa tu actividad.</p>
+                <a href="/perfil" class="btn btn-primary">Ir a mi perfil</a>
             </div>
         </div>
         <% } %>
 
 </div>
+
+<hr class="my-5">
+
+<h2 class="mb-4">Últimas publicaciones</h2>
+
+<% ultimas.forEach(pub=> { %>
+    <div class="latest-post">
+        <a href="/publicaciones/<%= pub.id_publicacion %>">
+            <%= pub.titulo %>
+        </a>
+        <br>
+        <small>por <%= pub.usuario.nombre %> — <%= pub.fecha_publicacion.toLocaleDateString() %></small>
+    </div>
+    <% }) %>

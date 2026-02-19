@@ -1,21 +1,24 @@
-<h1>Crear publicación</h1>
+<h1 class="mb-4">Crear publicación</h1>
 
-<form action="/publicaciones/crear" method="POST">
-    <label>Título:</label>
-    <input type="text" name="titulo" required>
+<div class="form-box">
+    <form action="/publicaciones/crear" method="POST">
 
-    <label>Contenido:</label>
-    <textarea name="contenido" required></textarea>
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
 
-    <label>Categoría:</label>
-    <select name="categoria">
-        <option value="">Sin categoría</option>
-        <% categorias.forEach(cat=> { %>
-            <option value="<%= cat.id_categoria %>">
-                <%= cat.nombre %>
-            </option>
-            <% }) %>
-    </select>
+        <label for="contenido">Contenido:</label>
+        <textarea id="contenido" name="contenido" required></textarea>
 
-    <button type="submit">Crear</button>
-</form>
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" name="categoria">
+            <option value="">Sin categoría</option>
+            <% categorias.forEach(cat=> { %>
+                <option value="<%= cat.id_categoria %>">
+                    <%= cat.nombre %>
+                </option>
+                <% }) %>
+        </select>
+
+        <button type="submit">Crear</button>
+    </form>
+</div>

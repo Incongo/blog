@@ -1,81 +1,82 @@
-<h1>Perfil de <%= usuario.nombre %>
+<h1 class="mb-4">Perfil de <%= usuario.nombre %>
 </h1>
 
-<% if (usuario.foto_perfil) { %>
-    <img src="<%= usuario.foto_perfil %>" alt="Foto de perfil"
-        style="width:150px; height:150px; object-fit:cover; border-radius:50%;">
-    <% } else { %>
-        <p>Sin foto de perfil</p>
-        <% } %>
+<div class="profile-box">
 
-            <% if (!esPropietario) { %>
+    <!-- AVATAR -->
+    <% if (usuario.foto_perfil) { %>
+        <img src="<%= usuario.foto_perfil %>" alt="Foto de perfil" class="profile-avatar">
+        <% } else { %>
+            <p>Sin foto de perfil</p>
+            <% } %>
 
-                <form action="/usuario/foto" method="POST" enctype="multipart/form-data">
-                    <input type="file" name="foto" accept="image/*" required>
-                    <button type="submit">Actualizar foto</button>
-                </form>
+                <!-- BOTÓN SEGUIR -->
+                <% if (!esPropietario) { %>
+                    <form action="/usuario/<%= usuario.id_usuario %>/seguir" method="POST">
+                        <button type="submit" class="follow-btn">
+                            <% if (usuario.seguimiento_seguimiento_id_seguidoTousuario.some(s=> s.id_seguidor ===
+                                user.id)) { %>
+                                Dejar de seguir
+                                <% } else { %>
+                                    Seguir
+                                    <% } %>
+                        </button>
+                    </form>
+                    <% } %>
 
+                        <!-- BIO -->
+                        <p><strong>Biografía:</strong>
+                            <%= usuario.biografia || "Sin biografía" %>
+                        </p>
 
-                <form action="/usuario/<%= usuario.id_usuario %>/seguir" method="POST">
-                    <button type="submit">
-                        <% if (usuario.seguimiento_seguimiento_id_seguidoTousuario.some(s=> s.id_seguidor ===
-                            user.id))
-                            { %>
-                            Dejar de seguir
-                            <% } else { %>
-                                Seguir
-                                <% } %>
-                    </button>
-                </form>
-                <% } %>
+                        <!-- FECHA -->
+                        <p><strong>Miembro desde:</strong>
+                            <%= usuario.fecha_registro.toLocaleDateString() %>
+                        </p>
 
+                        <!-- LIKES -->
+                        <p><strong>Likes recibidos:</strong>
+                            <%= likesRecibidos %>
+                        </p>
 
-                    <p><strong>Biografía:</strong>
-                        <%= usuario.biografia || "Sin biografía" %>
-                    </p>
-                    <p><strong>Miembro desde:</strong>
-                        <%= usuario.fecha_registro.toLocaleDateString() %>
-                    </p>
+                        <!-- ESTADÍSTICAS -->
+                        <div class="profile-stats">
+                            <div class="profile-stat">Seguidores: <%=
+                                    usuario.seguimiento_seguimiento_id_seguidoTousuario.length %>
+                            </div>
+                            <div class="profile-stat">Siguiendo: <%=
+                                    usuario.seguimiento_seguimiento_id_seguidorTousuario.length %>
+                            </div>
+                        </div>
 
-                    <p><strong>Likes recibidos:</strong>
-                        <%= likesRecibidos %>
-                    </p>
+                        <% if (esPropietario) { %>
+                            <a href="/usuario/editar" class="btn btn-primary mt-3">Editar perfil</a>
+                            <% } %>
 
-                    <hr>
+</div>
 
-                    <h2>Publicaciones</h2>
-                    <ul>
-                        <% usuario.publicacion.forEach(p=> { %>
-                            <li>
-                                <a href="/publicaciones/<%= p.id_publicacion %>">
-                                    <%= p.titulo %>
-                                </a>
-                                — <%= p.megusta_publicacion.length %> likes
-                            </li>
-                            <% }) %>
-                    </ul>
+<!-- PUBLICACIONES -->
+<h2 class="profile-section-title">Publicaciones</h2>
+<ul class="profile-list">
+    <% usuario.publicacion.forEach(p=> { %>
+        <li>
+            <a href="/publicaciones/<%= p.id_publicacion %>">
+                <%= p.titulo %>
+            </a>
+            — <%= p.megusta_publicacion.length %> likes
+        </li>
+        <% }) %>
+</ul>
 
-                    <hr>
-
-                    <h2>Comentarios</h2>
-                    <ul>
-                        <% usuario.comentario.forEach(c=> { %>
-                            <li>
-                                En <a href="/publicaciones/<%= c.publicacion.id_publicacion %>">
-                                    <%= c.publicacion.titulo %>
-                                </a>:
-                                <%= c.texto %>
-                            </li>
-                            <% }) %>
-                    </ul>
-
-                    <hr>
-
-                    <h2>Seguidores: <%= usuario.seguimiento_seguimiento_id_seguidoTousuario.length %>
-                    </h2>
-                    <h2>Siguiendo: <%= usuario.seguimiento_seguimiento_id_seguidorTousuario.length %>
-                    </h2>
-
-                    <% if (esPropietario) { %>
-                        <a href="/usuario/editar">Editar perfil</a>
-                        <% } %>
+<!-- COMENTARIOS -->
+<h2 class="profile-section-title">Comentarios</h2>
+<ul class="profile-list">
+    <% usuario.comentario.forEach(c=> { %>
+        <li>
+            En <a href="/publicaciones/<%= c.publicacion.id_publicacion %>">
+                <%= c.publicacion.titulo %>
+            </a>:
+            <%= c.texto %>
+        </li>
+        <% }) %>
+</ul>

@@ -1,14 +1,45 @@
-<h1>Publicaciones</h1>
+<h1 class="mb-4">Publicaciones</h1>
 
-<a href="/publicaciones/crear">Crear nueva publicación</a>
+<a href="/publicaciones/crear" class="btn btn-primary mb-4">Crear nueva publicación</a>
 
-<ul>
+<ul class="post-list">
     <% publicaciones.forEach(pub=> { %>
-        <li>
-            <a href="/publicaciones/<%= pub.id_publicacion %>">
+        <li class="post-card" onclick="window.location='/publicaciones/<%= pub.id_publicacion %>'">
+
+            <!-- HEADER: Avatar + Nombre -->
+            <div class="post-header">
+                <img src="<%= pub.usuario.foto_perfil || '/img/default-avatar.png' %>" class="post-avatar">
+
+                <div>
+                    <a href="/usuario/<%= pub.usuario.id_usuario %>" class="post-author">
+                        <%= pub.usuario.nombre %>
+                    </a>
+                </div>
+            </div>
+
+            <!-- TÍTULO -->
+            <a href="/publicaciones/<%= pub.id_publicacion %>" class="post-title">
                 <%= pub.titulo %>
             </a>
-            — por <%= pub.usuario.nombre %>
+
+            <!-- PREVIEW -->
+            <p class="post-preview">
+                <%= pub.contenido.substring(0, 120) %>...
+            </p>
+
+            <!-- META -->
+            <div class="post-meta">
+
+                <span>🕒 <%= pub.fecha_publicacion.toLocaleDateString() %></span>
+
+                <button class="like-btn" onclick="event.stopPropagation(); like(<%= pub.id_publicacion %>, this)">
+                    👍 <span>
+                        <%= (pub.megusta_publicacion || []).length %>
+                    </span>
+                </button>
+
+            </div>
+
         </li>
         <% }) %>
 </ul>

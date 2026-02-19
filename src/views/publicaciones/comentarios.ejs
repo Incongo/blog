@@ -1,0 +1,57 @@
+<div class="comment-box">
+
+    <!-- CABECERA DEL COMENTARIO -->
+    <div class="reply-header">
+        <img src="<%= c.usuario.foto_perfil || '/img/default-avatar.png' %>" class="reply-avatar">
+
+        <strong>
+            <a href="/usuario/<%= c.usuario.id_usuario %>">
+                <%= c.usuario.nombre %>
+            </a>
+        </strong>
+    </div>
+
+    <!-- TEXTO DEL COMENTARIO -->
+    <p class="reply-text">
+        <%= c.texto %>
+    </p>
+
+    <!-- BOTONES DEL COMENTARIO -->
+    <div class="comment-actions">
+        <% if (user && user.id===c.id_usuario) { %>
+            <a href="/comentarios/<%= c.id_comentario %>/editar" class="reply-btn">Editar</a>
+            <form action="/comentarios/<%= c.id_comentario %>/eliminar" method="POST" style="display:inline;">
+                <button class="reply-btn">Eliminar</button>
+            </form>
+            <% } %>
+
+                <% if (user) { %>
+                    <button class="reply-btn" onclick="toggleReply(<%= c.id_comentario %>)">
+                        Responder
+                    </button>
+                    <% } %>
+    </div>
+
+    <!-- FORMULARIO DE RESPUESTA -->
+    <% if (user) { %>
+        <form action="/comentarios/responder" method="POST" class="reply-form" id="reply-form-<%= c.id_comentario %>"
+            style="display:none;">
+
+            <input type="hidden" name="id_publicacion" value="<%= c.id_publicacion %>">
+            <input type="hidden" name="id_padre" value="<%= c.id_comentario %>">
+
+            <textarea name="texto" required placeholder="Escribe una respuesta..."></textarea>
+            <button type="submit" class="btn btn-primary">Enviar respuesta</button>
+        </form>
+        <% } %>
+
+            <!-- RESPUESTAS ANIDADAS -->
+            <% if (c.respuestas && c.respuestas.length> 0) { %>
+                <% c.respuestas.forEach(r=> { %>
+                    <div class="reply-box">
+                        <%- include("item", { c: r, user }) %>
+                    </div>
+                    <% }) %>
+                        <% } %>
+
+</div>

@@ -7,25 +7,29 @@
 </head>
 
 <body>
-    <h1>Panel de usuario</h1>
 
-    <p>Bienvenido, <%= user.nombre %>!</p>
+    <div class="dashboard-box">
 
-    <nav>
-        <a href="/">Inicio</a>
-        <a href="/logout">Cerrar sesión</a>
-    </nav>
+        <h1>Panel de usuario</h1>
+        <p>Bienvenido, <%= user.nombre %>!</p>
 
-    <hr>
+        <nav class="dashboard-nav">
+            <a href="/">Inicio</a>
+            <a href="/logout">Cerrar sesión</a>
+        </nav>
 
-    <h2>Opciones disponibles</h2>
-    <ul>
-        <li><a href="/publicaciones">Ver publicaciones</a></li>
-        <li><a href="/publicaciones/crear">Crear nueva publicación</a></li>
-        <li><a href="/perfil">Mi perfil</a></li>
-        <li><a href="/seguidores">Seguidores</a></li>
-        <li><a href="/comentarios">Mis comentarios</a></li>
-    </ul>
+        <h2 class="dashboard-section-title">Opciones disponibles</h2>
+
+        <ul class="dashboard-list">
+            <li><a href="/publicaciones">Ver publicaciones</a></li>
+            <li><a href="/publicaciones/crear">Crear nueva publicación</a></li>
+            <li><a href="/perfil">Mi perfil</a></li>
+            <li><a href="/seguidores">Seguidores</a></li>
+            <li><a href="/comentarios">Mis comentarios</a></li>
+        </ul>
+
+    </div>
+
 </body>
 
 </html>

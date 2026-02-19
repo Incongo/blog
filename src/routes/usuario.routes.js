@@ -8,13 +8,11 @@ router.get("/register", usuarioController.registerForm);
 router.post("/register", usuarioController.register);
 
 router.get("/usuario/editar", auth, usuarioController.formEditar);
-router.post("/usuario/editar", auth, usuarioController.editar);
-
 router.post(
-  "/usuario/foto",
+  "/usuario/editar",
   auth,
   upload.single("foto"),
-  usuarioController.actualizarFoto,
+  usuarioController.editar,
 );
 
 module.exports = router;

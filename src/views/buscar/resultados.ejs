@@ -1,13 +1,40 @@
 <h1>Resultados de búsqueda</h1>
 
-<p>Buscaste: <%= q %>
-</p>
+<p>Buscaste: "<%= q %>"</p>
 
-<h2>Usuarios</h2>
-<%= usuarios.length %> encontrados
+<hr>
 
-    <h2>Publicaciones</h2>
-    <%= publicaciones.length %> encontradas
+<h2>Usuarios (<%= usuarios.length %>)</h2>
+<ul>
+    <% usuarios.forEach(u=> { %>
+        <li><a href="/perfil/<%= u.id_usuario %>">
+                <%= u.nombre %>
+            </a></li>
+        <% }) %>
+</ul>
 
-        <h2>Comentarios</h2>
-        <%= comentarios.length %> encontrados
+<h2>Publicaciones (<%= publicaciones.length %>)</h2>
+<ul>
+    <% publicaciones.forEach(p=> { %>
+        <li>
+            <a href="/publicaciones/<%= p.id_publicacion %>">
+                <%= p.titulo %>
+            </a>
+            — por <%= p.usuario.nombre %>
+                — Likes: <%= p.megusta_publicacion.length %>
+        </li>
+        <% }) %>
+</ul>
+
+<h2>Comentarios (<%= comentarios.length %>)</h2>
+<ul>
+    <% comentarios.forEach(c=> { %>
+        <li>
+            <strong>
+                <%= c.usuario.nombre %>:
+            </strong>
+            <%= c.texto %>
+                en <a href="/publicaciones/<%= c.id_publicacion %>">publicación</a>
+        </li>
+        <% }) %>
+</ul>

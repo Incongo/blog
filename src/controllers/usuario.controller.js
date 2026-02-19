@@ -44,28 +44,22 @@ module.exports = {
   },
 
   async editar(req, res) {
+    const id = req.session.user.id;
+
     const { nombre, biografia } = req.body;
 
-    await prisma.usuario.update({
-      where: { id_usuario: req.session.user.id },
-      data: { nombre, biografia },
-    });
+    let data = { nombre, biografia };
 
-    res.redirect("/usuario/" + req.session.user.id);
-  },
-
-  async actualizarFoto(req, res) {
-    if (!req.file) {
-      return res.redirect("/usuario/" + req.session.user.id);
+    // Si hay foto nueva, añadirla
+    if (req.file) {
+      data.foto_perfil = "/uploads/" + req.file.filename;
     }
 
-    const ruta = "/uploads/" + req.file.filename;
-
     await prisma.usuario.update({
-      where: { id_usuario: req.session.user.id },
-      data: { foto_perfil: ruta },
+      where: { id_usuario: id },
+      data,
     });
 
-    res.redirect("/usuario/" + req.session.user.id);
+    res.redirect("/usuario/" + id);
   },
 };

@@ -62,4 +62,19 @@ module.exports = {
 
     res.redirect("/usuario/" + id);
   },
+
+  async listarUsuarios(req, res) {
+    const usuarios = await prisma.usuario.findMany({
+      orderBy: { nombre: "asc" },
+      include: {
+        seguimiento_seguimiento_id_seguidoTousuario: true, // seguidores
+        seguimiento_seguimiento_id_seguidorTousuario: true, // seguidos
+      },
+    });
+
+    res.render("usuario/lista", {
+      usuarios,
+      user: req.session.user,
+    });
+  },
 };

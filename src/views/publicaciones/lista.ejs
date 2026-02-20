@@ -12,9 +12,11 @@
 
                 <div>
                     <a href="/usuario/<%= pub.usuario.id_usuario %>" class="post-author">
+                        <i class="bi bi-person-circle"></i>
                         <%= pub.usuario.nombre %>
                     </a>
                 </div>
+
             </div>
 
             <!-- TÍTULO -->
@@ -30,12 +32,16 @@
             <!-- META -->
             <div class="post-meta">
 
-                <span>🕒 <%= pub.fecha_publicacion.toLocaleDateString() %></span>
-
+                <span><i class="bi bi-clock"></i>
+                    <%= pub.fecha_publicacion.toLocaleDateString() %>
+                </span>
                 <button class="like-btn" onclick="event.stopPropagation(); like(<%= pub.id_publicacion %>, this)">
-                    👍 <span>
+                    <i class="bi bi-hand-thumbs-up"></i>
+                    <span>
                         <%= (pub.megusta_publicacion || []).length %>
                     </span>
+                </button>
+
                 </button>
 
             </div>

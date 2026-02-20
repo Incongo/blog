@@ -8,6 +8,8 @@ router.get("/register", usuarioController.registerForm);
 router.post("/register", usuarioController.register);
 
 router.get("/usuario/editar", auth, usuarioController.formEditar);
+router.get("/usuarios", usuarioController.listarUsuarios);
+
 router.post(
   "/usuario/editar",
   auth,

@@ -1,0 +1,29 @@
+<h1 class="page-title">Usuarios</h1>
+
+<div class="user-list-container">
+    <% usuarios.forEach(u=> { %>
+        <a href="/usuario/<%= u.id_usuario %>" class="user-card">
+
+            <img src="<%= u.foto_perfil || '/img/default-avatar.png' %>" class="user-avatar">
+
+            <div class="user-info">
+                <span class="user-name">
+                    <%= u.nombre %>
+                </span>
+
+                <div class="user-stats">
+                    <span>
+                        <i class="bi bi-person-heart"></i>
+                        <%= u.seguimiento_seguimiento_id_seguidoTousuario.length %> seguidores
+                    </span>
+
+                    <span>
+                        <i class="bi bi-person-check"></i>
+                        <%= u.seguimiento_seguimiento_id_seguidorTousuario.length %> siguiendo
+                    </span>
+                </div>
+            </div>
+
+        </a>
+        <% }) %>
+</div>

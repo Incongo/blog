@@ -45,22 +45,45 @@ module.exports = {
       include: {
         usuario: true,
         categoria: true,
-        megusta_publicacion: true, // 👈 AQUI SE AÑADE
+        megusta_publicacion: true,
         comentario: {
-          where: { id_comentario_padre: null },
+          where: { id_comentario_padre: null }, // solo comentarios raíz
           include: {
             usuario: true,
             other_comentario: {
-              include: { usuario: true },
+              // respuestas nivel 1
+              include: {
+                usuario: true,
+                other_comentario: {
+                  // respuestas nivel 2
+                  include: { usuario: true },
+                },
+              },
             },
           },
+          orderBy: { fecha_comentario: "desc" },
         },
       },
     });
 
     if (!publicacion) return res.status(404).send("Publicación no encontrada");
 
-    res.render("publicaciones/detalle", { publicacion });
+    // 🔥 MAPEAR other_comentario → respuestas (lo que tu vista espera)
+    function mapRespuestas(c) {
+      return {
+        ...c,
+        respuestas: Array.isArray(c.other_comentario)
+          ? c.other_comentario.map(mapRespuestas)
+          : [],
+      };
+    }
+
+    publicacion.comentario = publicacion.comentario.map(mapRespuestas);
+
+    res.render("publicaciones/detalle", {
+      publicacion,
+      user: req.session.user,
+    });
   },
 
   // FORMULARIO EDITAR

@@ -49,7 +49,7 @@
             <% if (c.respuestas && c.respuestas.length> 0) { %>
                 <% c.respuestas.forEach(r=> { %>
                     <div class="reply-box">
-                        <%- include("item", { c: r, user }) %>
+                        <%- include("./comentarios", { c: r, user }) %>
                     </div>
                     <% }) %>
                         <% } %>

@@ -1,23 +1,30 @@
-<h1>Editar publicación</h1>
+<div class="edit-container">
+    <h1 class="edit-title">Editar publicación</h1>
 
-<form action="/publicaciones/<%= publicacion.id_publicacion %>/editar" method="POST">
-    <label>Título:</label>
-    <input type="text" name="titulo" value="<%= publicacion.titulo %>" required>
+    <form action="/publicaciones/<%= publicacion.id_publicacion %>/editar" method="POST" class="edit-form">
 
-    <label>Contenido:</label>
-    <textarea name="contenido" required><%= publicacion.contenido %></textarea>
+        <label class="edit-label">Título</label>
+        <input type="text" name="titulo" value="<%= publicacion.titulo %>" required class="edit-input">
 
-    <label>Categoría:</label>
-    <select name="categoria">
-        <option value="">Sin categoría</option>
-        <% categorias.forEach(cat=> { %>
-            <option value="<%= cat.id_categoria %>" <%=publicacion.id_categoria===cat.id_categoria ? "selected" : "" %>>
-                <%= cat.nombre %>
-            </option>
-            <% }) %>
-    </select>
+        <label class="edit-label">Contenido</label>
+        <textarea name="contenido" required class="edit-textarea"><%= publicacion.contenido %></textarea>
 
-    <button type="submit">Guardar cambios</button>
-</form>
+        <label class="edit-label">Categoría</label>
+        <select name="categoria" class="edit-select">
+            <option value="">Sin categoría</option>
+            <% categorias.forEach(cat=> { %>
+                <option value="<%= cat.id_categoria %>" <%=publicacion.id_categoria===cat.id_categoria ? "selected" : ""
+                    %>
+                    >
+                    <%= cat.nombre %>
+                </option>
+                <% }) %>
+        </select>
 
-<a href="/publicaciones/<%= publicacion.id_publicacion %>">Cancelar</a>
+        <button type="submit" class="btn-save">Guardar cambios</button>
+    </form>
+
+    <a href="/publicaciones/<%= publicacion.id_publicacion %>" class="btn-cancel">
+        Cancelar
+    </a>
+</div>

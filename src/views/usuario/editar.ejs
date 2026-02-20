@@ -1,33 +1,37 @@
-<h1>Editar perfil</h1>
+<div class="profile-edit-container">
 
-<!-- Foto actual -->
-<% if (usuario.foto_perfil) { %>
-    <img src="<%= usuario.foto_perfil %>" alt="Foto de perfil"
-        style="width:150px; height:150px; object-fit:cover; border-radius:50%; margin-bottom:20px;">
-    <% } else { %>
-        <p>No tienes foto de perfil</p>
-        <% } %>
+    <h1 class="profile-edit-title">Editar perfil</h1>
 
-            <!-- FORMULARIO ÚNICO -->
-            <form action="/usuario/editar" method="POST" enctype="multipart/form-data" style="margin-top:20px;">
+    <!-- FOTO ACTUAL -->
+    <div class="profile-photo-section">
+        <% if (usuario.foto_perfil) { %>
+            <img src="<%= usuario.foto_perfil %>" alt="Foto de perfil" class="profile-photo">
+            <% } else { %>
+                <p class="no-photo">No tienes foto de perfil</p>
+                <% } %>
+    </div>
 
-                <!-- Subir nueva foto -->
-                <label for="formFile" class="form-label">Nueva foto de perfil</label><br>
-                <input class="form-control" type="file" id="formFile" name="foto" accept="image/*">
+    <!-- FORMULARIO -->
+    <form action="/usuario/editar" method="POST" enctype="multipart/form-data" class="profile-edit-form">
 
-                <hr>
+        <!-- Subir nueva foto -->
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Nueva foto de perfil</label>
+            <input class="form-control" accept="image/*" type="file" id="formFile" name="foto">
+        </div>
 
-                <!-- Editar nombre -->
-                <label>Nombre</label>
-                <input type="text" name="nombre" value="<%= usuario.nombre %>" required>
+        <hr class="edit-separator">
 
-                <!-- Editar biografía -->
-                <label>Biografía</label>
-                <textarea name="biografia" rows="4"><%= usuario.biografia || "" %></textarea>
+        <!-- Nombre -->
+        <label class="edit-label">Nombre</label>
+        <input type="text" name="nombre" value="<%= usuario.nombre %>" required class="edit-input">
 
-                <button type="submit" style="margin-top:20px;">Actualizar perfil</button>
-            </form>
+        <!-- Biografía -->
+        <label class="edit-label">Biografía</label>
+        <textarea name="biografia" rows="4" class="edit-textarea"><%= usuario.biografia || "" %></textarea>
 
-            <hr>
+        <button type="submit" class="btn-save">Actualizar perfil</button>
+    </form>
 
-            <a href="/usuario/<%= usuario.id_usuario %>">Volver al perfil</a>
+    <a href="/usuario/<%= usuario.id_usuario %>" class="btn-cancel">Volver al perfil</a>
+</div>

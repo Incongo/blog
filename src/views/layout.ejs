@@ -99,6 +99,29 @@
             box.style.display = box.style.display === "none" ? "block" : "none";
         }
     </script>
+    <script>
+        async function like(id_publicacion, btn) {
+            try {
+                const res = await fetch(`/publicaciones/${id_publicacion}/like`, {
+                    method: "POST"
+                });
+
+                if (!res.ok) return;
+
+                // Actualizar contador en el botón
+                const span = btn.querySelector("span");
+                const current = Number(span.textContent);
+
+                // Alternar like / unlike según el backend
+                const data = await res.json();
+
+                span.textContent = data.likes;
+            } catch (err) {
+                console.error("Error al dar like:", err);
+            }
+        }
+    </script>
+
 
 
 
